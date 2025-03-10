@@ -1,40 +1,71 @@
 class Solution {
 public:
-     bool isVowel(char c) {
-        return c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u';
+    bool isVowel(char &ch) {
+        return ch == 'a' || ch == 'e' || ch == 'i' || ch == 'o' || ch == 'u';
     }
+    long long countOfSubstrings(string word, int k) {
+        int n = word.length();
 
-    long long atLeastK(string& word, int k) {
-        int n = word.size();
-        long long ans = 0;
-        int consonants = 0;
-        int left = 0;
-        unordered_map<char, int> vowel_map;
+        unordered_map<char, int> mp; 
+        //S.C : O(5) constant
 
-        for (int right = 0; right < n; right++) {
-            if (isVowel(word[right])) {
-                vowel_map[word[right]]++;
-            } else {
-                consonants++;
-            }
-
-            while (vowel_map.size() == 5 && consonants >= k) {
-                ans += n - right;
-                if (isVowel(word[left])) {
-                    vowel_map[word[left]]--;
-                    if (vowel_map[word[left]] == 0) {
-                        vowel_map.erase(word[left]);
-                    }
-                } else {
-                    consonants--;
-                }
-                left++;
+        //Preprocessing to be able to find index of just next consonant
+        vector<int> nextCons(n); //S.C : O(n)
+        int lastConsIdx = n;
+        //T.C : O(n)
+        for(int i = n-1; i >=0; i--) {
+            nextCons[i] = lastConsIdx;
+            if(!isVowel(word[i])) { //consonant
+                lastConsIdx = i;
             }
         }
-        return ans;
-    }
 
-    long long countOfSubstrings(string word, int k) {
-        return atLeastK(word, k) - atLeastK(word, k + 1);
+
+        int i = 0;
+        int j = 0;
+        long long count = 0;
+        int cons = 0;
+        //T.C : O(2*n) ~ O(n) 
+        while(j < n) {
+            char ch = word[j];
+            if(isVowel(ch)) {
+                mp[ch]++;
+            } else {
+                cons++;
+            }
+
+            //cons must be always == k
+            while(cons > k) {
+                char ch = word[i];
+                if(isVowel(ch)) {
+                    mp[ch]--;
+                    if(mp[ch] == 0) {
+                        mp.erase(ch);
+                    }
+                } else {
+                    cons--;
+                }
+                i++;
+            }
+
+            while(i < n && mp.size() == 5 && cons == k) { //valid window
+                int idx = nextCons[j]; //it will tell me the next consonant after jth index
+                count += idx - j; //most important part
+                char ch = word[i];
+                if(isVowel(ch)) {
+                    mp[ch]--;
+                    if(mp[ch] == 0) {
+                        mp.erase(ch);
+                    }
+                } else {
+                    cons--;
+                }
+                i++;
+            }
+
+            j++;
+        }
+
+        return count;
     }
 };
