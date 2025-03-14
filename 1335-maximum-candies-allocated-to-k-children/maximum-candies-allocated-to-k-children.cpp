@@ -3,9 +3,7 @@ public:
     bool candistribute(vector<int> &candies, int mid, long long k){ 
         int n = candies.size();
         for(int i=0;i<n;i++){
-            if(candies[i]>=mid){
-                 k -= candies[i]/mid; 
-            }
+            k -= candies[i]/mid; 
             if(k<=0){
               return true;
             }
