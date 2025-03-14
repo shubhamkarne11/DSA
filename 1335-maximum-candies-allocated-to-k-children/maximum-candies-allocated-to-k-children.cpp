@@ -3,7 +3,9 @@ public:
     bool candistribute(vector<int> &candies, int mid, long long k){ 
         int n = candies.size();
         for(int i=0;i<n;i++){
-            k -= candies[i]/mid; 
+            if(candies[i]>=mid){
+                 k -= candies[i]/mid; 
+            }
             if(k<=0){
               return true;
             }
@@ -14,7 +16,7 @@ public:
     int maximumCandies(vector<int>& candies, long long k) {
         int n = candies.size();
         long long total = 0;
-        for(auto i: candies){
+        for(auto i : candies){
             total += i;
         }
         if(total<k){
