@@ -1,38 +1,35 @@
 class Solution {
-public: 
-    bool candistribute(vector<int>& candies , int mid, long long k){
+public:
+    bool candistribute(vector<int> &candies, int mid, long long k){ 
         int n = candies.size();
         for(int i=0;i<n;i++){
-            k -= candies[i]/mid;
+            k -= candies[i]/mid; 
             if(k<=0){
-                return true;
+              return true;
             }
         }
+        
         return k<=0;
     }
     int maximumCandies(vector<int>& candies, long long k) {
         int n = candies.size();
-        int maxC = 0;
         long long total = 0;
-        for(int i = 0; i < n; i++) {
+        for(int i=0;i<n;i++){
             total += candies[i];
-            maxC = max(maxC, candies[i]);
         }
-
-        if(total < k) {
+        if(total<k){
             return 0;
         }
-
         int l = 1;
-        int r = maxC;
-        int ans=0;
+        int r = *max_element(candies.begin(),candies.end());;
+        int ans = 0;
         while(l<=r){
             int mid = l + (r-l)/2;
-            if(candistribute(candies , mid, k)){
+            if(candistribute(candies, mid, k)){
                 ans = mid;
-                l=mid+1;
+                l = mid + 1;
             }else{
-                r=mid-1;
+                r = mid - 1;
             }
         }
         return ans;
