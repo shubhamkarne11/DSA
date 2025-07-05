@@ -2,17 +2,15 @@ class Solution {
 public:
     int findLucky(vector<int>& arr) {
         int count2=-1;
-        unordered_map<int,int>mpp;
+        int freq[501]={0};
         for(int i=0;i<arr.size();i++){
-            mpp[arr[i]]++;
+            freq[arr[i]]++;
         }
-
-        //now mpp is [2:2 , 3:1 , 4:1];
-        for(auto i : mpp){
-            if(i.first==i.second){
-                count2=max(count2, i.first);
+        for(int i=500;i>=1;i--){
+            if(freq[i]==i){
+                return i;
             }
         }
-        return count2;
+        return -1;
     }
 };
