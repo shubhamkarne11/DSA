@@ -1,46 +1,47 @@
 class Solution {
 public:
-    int firstelement(vector<int>nums, int target){
-        int l = 0;
-        int r = nums.size()-1;
-        int ans = -1;
-        while(l<=r){
-            int mid = l + (r-l)/2;
+    int firstpos(vector<int>nums, int target){
+        int size = nums.size();
+        int left = 0;
+        int right = size-1;
+        int ans=-1;
+        while(left<=right){
+            int mid = left + (right - left)/2;
             if(nums[mid]==target){
-                ans = mid;
-                r = mid - 1;
+                right = mid-1;
+                ans=mid;
             }else if(nums[mid]>target){
-                r = mid-1;
+                right = mid-1;
             }else if(nums[mid]<target){
-                l = mid+1;
+                left=mid+1;
             }
         }
         return ans;
     }
-
-
-    int lastelement(vector<int>nums, int target){
-        int l = 0;
-        int r = nums.size()-1;
-        int ans = -1;
-        while(l<=r){
-            int mid = l + (r-l)/2;
+    int lastpos(vector<int>nums, int target){
+        int size = nums.size();
+        int left = 0;
+        int right = size-1;
+        int ans=-1;
+        while(left<=right){
+            int mid = left + (right - left)/2;
             if(nums[mid]==target){
-                ans = mid;
-                l = mid + 1;
+                left = mid+1;
+                ans=mid;
             }else if(nums[mid]>target){
-                r = mid-1;
+                right =  mid-1;
             }else if(nums[mid]<target){
-                l = mid+1;
+                left=mid+1;
             }
         }
         return ans;
     }
-
-
     vector<int> searchRange(vector<int>& nums, int target) {
-        int first = firstelement(nums, target);
-        int last = lastelement(nums, target);
-        return {first , last};
+        vector<int>ans;
+        int n1=firstpos(nums,target);
+        int n2=lastpos(nums,target);
+        ans.push_back(n1);
+        ans.push_back(n2);
+        return ans;
     }
 };
